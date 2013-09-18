@@ -1,0 +1,21 @@
+﻿<Application x:Class="Silverforge.TwitterClient.App"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="clr-namespace:Silverforge.TwitterClient">
+
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary>
+					<local:ResourceWrapper x:Key="ResourceWrapper" />
+					<local:CaliburnContentLoader x:Key="CaliburnContentLoader" />
+					<local:AppBootstrapper x:Key="AppBootstrapper" />
+				</ResourceDictionary>
+				<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
+				<ResourceDictionary Source="/SilverForge.TwitterClient;component/Assets/SilverForgeTwitterTheme.xaml"/>
+				<!--<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml"/>-->
+				<!--<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Dark.xaml"/>-->
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+</Application>
