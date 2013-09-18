@@ -156,6 +156,10 @@
       <Project>{6eb0acff-7ffa-469c-a794-47fb4942ecd1}</Project>
       <Name>Silverforge.TwitterClient.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Silverforge.TwitterClient.Model\Silverforge.TwitterClient.Model.csproj">
+      <Project>{6A25238F-1CC5-4F05-9E5F-DB0A0ED513C8}</Project>
+      <Name>Silverforge.TwitterClient.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Silverforge.TwitterClient.Common.Definition;
+using Silverforge.TwitterClient.Model;
 using TweetSharp;
 
 namespace Silverforge.TwitterClient.ViewModels
@@ -12,7 +12,7 @@ namespace Silverforge.TwitterClient.ViewModels
 		public TwitterViewModel(IAppSettings appSettings)
 		{
 			this.appSettings = appSettings;
-			Tweets = new BindableCollection<TwitterStatus>();
+			Tweets = new BindableCollection<Tweet>();
 		}
 
 		protected override void OnViewLoaded(object view)
@@ -21,12 +21,16 @@ namespace Silverforge.TwitterClient.ViewModels
 
 			var service = new TwitterService(appSettings.ConsumerKey, appSettings.ConsumerSecret);
 			service.AuthenticateWith(appSettings.AccessToken, appSettings.AccessTokenSecret);
+			
 			var listTweetsOnHomeTimeline = service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions());
-			Tweets.AddRange(listTweetsOnHomeTimeline);
 
-			//Tweets.First().User.Name
+			foreach (var ts in listTweetsOnHomeTimeline)
+			{
+				var textAsHtml = ts.TextAsHtml.Replace("</a>", "[/url]").Replace("\" target=\"_blank\">", "]").Replace("<a href=\"", "[url=");
+				Tweets.Add(new Tweet { ImageUrl = ts.User.ProfileImageUrl, Text = textAsHtml, UserFullName = ts.User.Name });
+			}
 		}
 
-		public BindableCollection<TwitterStatus> Tweets { get; private set; }
+		public BindableCollection<Tweet> Tweets { get; private set; }
 	}
 }
