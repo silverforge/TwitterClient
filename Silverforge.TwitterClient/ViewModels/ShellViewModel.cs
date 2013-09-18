@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using FirstFloor.ModernUI.Presentation;
 using Silverforge.TwitterClient.Common.Definition;
 using Silverforge.TwitterClient.Helpers;
@@ -7,13 +8,22 @@ namespace Silverforge.TwitterClient.ViewModels
 {
 	public class ShellViewModel : Conductor<IViewModel>.Collection.OneActive, IShellViewModel
 	{
+		private readonly INavigationManager navigationManager;
 		private string currentContentUri;
 
-		public ShellViewModel(IEventAggregator eventAggregator, StringMessageHandler stringMessageHandler)
+		public ShellViewModel(IEventAggregator eventAggregator, StringMessageHandler stringMessageHandler, INavigationManager navigationManager)
 		{
+			this.navigationManager = navigationManager;
 			eventAggregator.Subscribe(stringMessageHandler);
 			MenuLinkGroups = new LinkGroupCollection();
-			TitleLinks = new LinkCollection();
+			var tweetUri = navigationManager.Uri<ITwitterViewModel>();
+			var administrationUri = navigationManager.Uri<IAdministrationViewModel>();
+
+			TitleLinks = new LinkCollection
+				{
+					new Link {DisplayName = "tweets", Source = new Uri(tweetUri, UriKind.RelativeOrAbsolute)},
+					new Link {DisplayName = "administration", Source = new Uri(administrationUri, UriKind.RelativeOrAbsolute)}
+				};
 		}
 
 		public LinkGroupCollection MenuLinkGroups { get; private set; }
@@ -29,9 +39,9 @@ namespace Silverforge.TwitterClient.ViewModels
 			}
 		}
 
-		public void Initialize(INavigationManager navigationManager)
+		public void Initialize()
 		{
-			navigationManager.To<IAccountViewModel>();
+			navigationManager.To<ITwitterViewModel>();
 		}
 	}
 }

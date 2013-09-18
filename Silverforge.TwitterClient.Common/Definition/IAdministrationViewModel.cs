@@ -1,7 +1,7 @@
 ﻿namespace Silverforge.TwitterClient.Common.Definition
 {
-	public interface IShellViewModel
+	public interface IAdministrationViewModel : IViewModel
 	{
-		void Initialize();
+		 
 	}
 }

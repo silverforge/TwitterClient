@@ -19,10 +19,11 @@ namespace Silverforge.TwitterClient.ViewModels
 		{
 			base.OnViewLoaded(view);
 
-			var service = new TwitterService(appSettings.ConsumerKey, appSettings.ConsumerSecret);
-			service.AuthenticateWith(appSettings.AccessToken, appSettings.AccessTokenSecret);
-			
+			var service = new TwitterService(appSettings.ConsumerKey, appSettings.ConsumerSecret, appSettings.AccessToken, appSettings.AccessTokenSecret);
 			var listTweetsOnHomeTimeline = service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions());
+
+			if (listTweetsOnHomeTimeline == null)
+				return;
 
 			foreach (var ts in listTweetsOnHomeTimeline)
 			{

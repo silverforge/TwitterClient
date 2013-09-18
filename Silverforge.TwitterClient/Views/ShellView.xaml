@@ -11,6 +11,7 @@
 		ContentSource="{Binding CurrentContentUri}"
 		MenuLinkGroups="{Binding MenuLinkGroups}"
 		TitleLinks="{Binding TitleLinks}"
+		Icon=".././Images/logo.png"
 		>
 
 	<Grid>

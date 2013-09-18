@@ -5,7 +5,7 @@
 		string ConsumerKey { get;  }
 		string ConsumerSecret { get;  }
 
-		string AccessToken { get; set; }
-		string AccessTokenSecret { get; set; }
+		string AccessToken { get; }
+		string AccessTokenSecret { get; }
 	}
 }

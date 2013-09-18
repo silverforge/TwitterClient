@@ -19,21 +19,23 @@ namespace Silverforge.TwitterClient
 		{
 			container = new Container();
 
-			container.RegisterSingle<IWindowManager, WindowManager>();
-			container.RegisterSingle<IEventAggregator, EventAggregator>();
-			container.RegisterSingle<INavigationManager, NavigationManager>();
-			var caliburnContentLoader = Application.Current.Resources["CaliburnContentLoader"] as CaliburnContentLoader;
-			container.RegisterSingle(caliburnContentLoader);
-
 			IoC.GetInstance = GetInstance;
 			IoC.GetAllInstances = GetAllInstances;
 			IoC.BuildUp = BuildUp;
 
-			container.RegisterSingle<IAppSettings, AppSettings>();
-			container.RegisterSingle<IShellViewModel, ShellViewModel>();
+			var caliburnContentLoader = Application.Current.Resources["CaliburnContentLoader"] as CaliburnContentLoader;
+			container.RegisterSingle(caliburnContentLoader);
+
+			container.RegisterSingle<IWindowManager, WindowManager>();
+			container.RegisterSingle<IEventAggregator, EventAggregator>();
+			container.RegisterSingle<INavigationManager, NavigationManager>();
+
 			container.RegisterSingle<StringMessageHandler>();
 
-			container.RegisterAll<IViewModel>(typeof(AccountViewModel), typeof(TwitterViewModel));
+			container.RegisterSingle<IAppSettings, AppSettings>();
+			container.RegisterSingle<IShellViewModel, ShellViewModel>();
+			container.Register<ITwitterViewModel, TwitterViewModel>();
+			container.Register<IAdministrationViewModel, AdministrationViewModel>();
 
 			container.Verify();
 		}
@@ -60,7 +62,7 @@ namespace Silverforge.TwitterClient
 		protected override void OnStartup(object sender, StartupEventArgs e)
 		{
 			base.OnStartup(sender, e);
-			IoC.Get<IShellViewModel>().Initialize(IoC.Get<INavigationManager>());
+			IoC.Get<IShellViewModel>().Initialize();
 		}
 	}
 }

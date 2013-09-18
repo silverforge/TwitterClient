@@ -43,7 +43,7 @@
     <Compile Include="ApplicationContext.cs" />
     <Compile Include="AppSettings.cs" />
     <Compile Include="ContextKeys.cs" />
-    <Compile Include="Definition\IAccountViewModel.cs" />
+    <Compile Include="Definition\IAdministrationViewModel.cs" />
     <Compile Include="Definition\IAppSettings.cs" />
     <Compile Include="Definition\INavigationManager.cs" />
     <Compile Include="Definition\IShellViewModel.cs" />
