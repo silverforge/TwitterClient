@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace Silverforge.TwitterClient.Helpers
 {
-	public static class EpicVisualTreeHelper
+	public static class CustomVisualTreeHelper
 	{
 		public static T GetChildOfType<T>(this DependencyObject depObj)
 			where T : DependencyObject

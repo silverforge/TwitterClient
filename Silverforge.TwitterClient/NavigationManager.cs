@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Navigation;
 using Caliburn.Micro;
 using FirstFloor.ModernUI.Windows.Controls;
 using Silverforge.TwitterClient.Common;
