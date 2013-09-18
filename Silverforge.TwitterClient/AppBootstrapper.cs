@@ -1,4 +1,5 @@
 using System.Windows;
+using Silverforge.TwitterClient.Common;
 using Silverforge.TwitterClient.Common.Definition;
 using Silverforge.TwitterClient.Helpers;
 using Silverforge.TwitterClient.ViewModels;
@@ -18,16 +19,17 @@ namespace Silverforge.TwitterClient
 		{
 			container = new Container();
 
+			container.RegisterSingle<IWindowManager, WindowManager>();
+			container.RegisterSingle<IEventAggregator, EventAggregator>();
+			container.RegisterSingle<INavigationManager, NavigationManager>();
+			var caliburnContentLoader = Application.Current.Resources["CaliburnContentLoader"] as CaliburnContentLoader;
+			container.RegisterSingle(caliburnContentLoader);
+
 			IoC.GetInstance = GetInstance;
 			IoC.GetAllInstances = GetAllInstances;
 			IoC.BuildUp = BuildUp;
 
-			var caliburnContentLoader = Application.Current.Resources["CaliburnContentLoader"] as CaliburnContentLoader;
-			container.RegisterSingle(caliburnContentLoader);
-
-			container.RegisterSingle<IWindowManager, WindowManager>();
-			container.RegisterSingle<IEventAggregator, EventAggregator>();
-			container.RegisterSingle<INavigationManager, NavigationManager>();
+			container.RegisterSingle<IAppSettings, AppSettings>();
 			container.RegisterSingle<IShellViewModel, ShellViewModel>();
 			container.RegisterSingle<StringMessageHandler>();
 

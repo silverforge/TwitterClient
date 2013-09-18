@@ -61,11 +61,20 @@ namespace Silverforge.TwitterClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email.
+        ///   Looks up a localized string similar to Access token.
         /// </summary>
-        public static string Email {
+        public static string AccessToken {
             get {
-                return ResourceManager.GetString("Email", resourceCulture);
+                return ResourceManager.GetString("AccessToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Access token secret.
+        /// </summary>
+        public static string AccessTokenSecret {
+            get {
+                return ResourceManager.GetString("AccessTokenSecret", resourceCulture);
             }
         }
         
@@ -75,15 +84,6 @@ namespace Silverforge.TwitterClient.Properties {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password.
-        /// </summary>
-        public static string Password {
-            get {
-                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         

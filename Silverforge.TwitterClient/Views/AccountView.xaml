@@ -9,10 +9,6 @@
 		Title="AccountView"
 		>
 
-	<Page.Resources>
-		<BooleanToVisibilityConverter x:Key="Bool2Visibility"/>
-	</Page.Resources>
-
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
@@ -32,22 +28,20 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 
-			<StackPanel Orientation="Horizontal">
-				<AdornerDecorator>
-					<TextBox x:Name="EmailAddress" Width="200" Height="25" Margin="3">
-						<helpers:WatermarkService.Watermark>
-							<TextBlock Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Email}" />
-						</helpers:WatermarkService.Watermark>
-					</TextBox>
-				</AdornerDecorator>
-			</StackPanel>
-
-			<AdornerDecorator Grid.Row="1">
-				<PasswordBox x:Name="Password" Width="200" Height="25" Margin="3" HorizontalAlignment="Left" PasswordChanged="Password_OnPasswordChanged">
+			<AdornerDecorator HorizontalAlignment="Left">
+				<TextBox x:Name="AccessToken" Width="200" Height="25" Margin="3">
 					<helpers:WatermarkService.Watermark>
-						<TextBlock Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Password}" />
+						<TextBlock Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.AccessToken}" />
 					</helpers:WatermarkService.Watermark>
-				</PasswordBox>
+				</TextBox>
+			</AdornerDecorator>
+
+			<AdornerDecorator Grid.Row="1" HorizontalAlignment="Left">
+				<TextBox x:Name="AccessTokenSecret" Width="200" Height="25" Margin="3">
+					<helpers:WatermarkService.Watermark>
+						<TextBlock Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.AccessTokenSecret}" />
+					</helpers:WatermarkService.Watermark>
+				</TextBox>
 			</AdornerDecorator>
 
 			<Button x:Name="Login" Grid.Row="4" Width="100" HorizontalAlignment="Left" Margin="3" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Login}" />

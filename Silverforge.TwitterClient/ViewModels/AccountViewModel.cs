@@ -1,90 +1,52 @@
-﻿using System.Security;
-using Silverforge.TwitterClient.Common;
+﻿using Silverforge.TwitterClient.Common;
 using Silverforge.TwitterClient.Common.Definition;
 
 namespace Silverforge.TwitterClient.ViewModels
 {
 	public class AccountViewModel : BaseViewModel, IAccountViewModel
 	{
-		private SecureString password;
-		private string emailAddress;
-		private bool isEpamEmployee;
-		private bool isRememberMe;
+		private readonly IAppSettings appSettings;
+		private string accessToken;
+		private string accessTokenSecret;
 
-		public string EmailAddress
+		public AccountViewModel(IAppSettings appSettings)
 		{
-			get { return emailAddress; }
+			this.appSettings = appSettings;
+		}
+
+		public string AccessToken
+		{
+			get { return accessToken; }
 			set
 			{
-				emailAddress = value;
-				NotifyOfPropertyChange();
+				accessToken = value;
+				NotifyOfPropertyChange(() => AccessToken);
 				NotifyOfPropertyChange(() => CanLogin);
 			}
 		}
 
-		public SecureString Password
+		public string AccessTokenSecret
 		{
-			get { return password; }
+			get { return accessTokenSecret; }
 			set
 			{
-				password = value;
-				NotifyOfPropertyChange();
+				accessTokenSecret = value;
+				NotifyOfPropertyChange(() => AccessTokenSecret);
 				NotifyOfPropertyChange(() => CanLogin);
-			}
-		}
-
-		public bool IsEpamEmployee
-		{
-			get { return isEpamEmployee; }
-			set
-			{
-				isEpamEmployee = value;
-				NotifyOfPropertyChange();
-			}
-		}
-
-		public bool IsRememberMe
-		{
-			get { return isRememberMe; }
-			set
-			{
-				isRememberMe = value;
-				NotifyOfPropertyChange();
 			}
 		}
 
 		public bool CanLogin
 		{
-			get { return !string.IsNullOrEmpty(EmailAddress) && (Password != null && Password.Length > 0); }
+			get { return !string.IsNullOrEmpty(AccessToken) && !string.IsNullOrEmpty(AccessTokenSecret); }
 		}
 
 		public void Login()
 		{
-			// TODO [MGJ] : Do not forget to remove it after you got it from service
-			//var accountInfo = new AccountInfo
-			//{
-			//	CurrentUser = new User
-			//	{
-			//		Email = "Teszt_Elek@real.com",
-			//		FirstName = "Teszt",
-			//		LastName = "Elek",
-			//		Id = 6,
-			//		NickName = "Teszt",
-			//		TitleName = "Tester",
-			//		UserFullName = "TESZT, Elek",
-			//		UserName = "teszt_elek",
-			//		UserType = "E"
-			//	},
-			//	IsAuthenticated = true
-			//};
+			appSettings.AccessToken = AccessToken;
+			appSettings.AccessTokenSecret = AccessTokenSecret;
 
-			//navigationManager.Context.Set(ContextKeys.AccountInfo, accountInfo);
 			NavigationManager.SendMessage(MessageKeys.Authenticated);
-		}
-
-		public void PasswordChanged(object current)
-		{
-			
 		}
 	}
 }

@@ -9,6 +9,7 @@
 		>
 
 	<Grid>
-		<TextBlock Text="TwitterView"></TextBlock>
+		<ItemsControl ItemsSource="{Binding Tweets}">
+		</ItemsControl>
 	</Grid>
 </Page>
