@@ -81,7 +81,7 @@
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="CaliburnContentLoader.cs" />
-    <Compile Include="Helpers\EpicVisualTreeHelper.cs" />
+    <Compile Include="Helpers\CustomVisualTreeHelper.cs" />
     <Compile Include="Helpers\StringMessageHandler.cs" />
     <Compile Include="NavigationManager.cs" />
     <Compile Include="Helpers\ScrollOnNewItem.cs" />
