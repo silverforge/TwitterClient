@@ -4,8 +4,9 @@
 	{
 		string ConsumerKey { get;  }
 		string ConsumerSecret { get;  }
-
 		string AccessToken { get; }
 		string AccessTokenSecret { get; }
+
+		int PollInterval { get; set; }
 	}
 }

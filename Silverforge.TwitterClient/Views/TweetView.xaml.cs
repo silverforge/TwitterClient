@@ -1,11 +1,11 @@
 ﻿namespace Silverforge.TwitterClient.Views
 {
 	/// <summary>
-	/// Interaction logic for TwitterView.xaml
+	/// Interaction logic for TweetView.xaml
 	/// </summary>
-	public partial class TwitterView
+	public partial class TweetView
 	{
-		public TwitterView()
+		public TweetView()
 		{
 			InitializeComponent();
 		}

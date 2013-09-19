@@ -34,7 +34,7 @@ namespace Silverforge.TwitterClient
 
 			container.RegisterSingle<IAppSettings, AppSettings>();
 			container.RegisterSingle<IShellViewModel, ShellViewModel>();
-			container.Register<ITwitterViewModel, TwitterViewModel>();
+			container.Register<ITweetViewModel, TweetViewModel>();
 			container.Register<IAdministrationViewModel, AdministrationViewModel>();
 
 			container.Verify();

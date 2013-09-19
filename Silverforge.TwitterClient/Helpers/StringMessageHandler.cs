@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
-using Silverforge.TwitterClient.Common;
 using Silverforge.TwitterClient.Common.Definition;
 
 namespace Silverforge.TwitterClient.Helpers
@@ -11,7 +10,6 @@ namespace Silverforge.TwitterClient.Helpers
 		private readonly INavigationManager navigationManager;
 		private readonly Dictionary<string, Type> navigationRoutes = new Dictionary<string, Type>
 			{
-				{MessageKeys.Authenticated, typeof(ITwitterViewModel)}
 			};
 
 		public StringMessageHandler(INavigationManager navigationManager)

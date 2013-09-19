@@ -123,6 +123,9 @@
   <data name="AccessTokenSecret" xml:space="preserve">
     <value>Access token secret</value>
   </data>
+  <data name="Favorite" xml:space="preserve">
+    <value>Favorite</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>

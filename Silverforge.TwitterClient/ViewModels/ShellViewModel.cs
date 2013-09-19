@@ -16,7 +16,7 @@ namespace Silverforge.TwitterClient.ViewModels
 			this.navigationManager = navigationManager;
 			eventAggregator.Subscribe(stringMessageHandler);
 			MenuLinkGroups = new LinkGroupCollection();
-			var tweetUri = navigationManager.Uri<ITwitterViewModel>();
+			var tweetUri = navigationManager.Uri<ITweetViewModel>();
 			var administrationUri = navigationManager.Uri<IAdministrationViewModel>();
 
 			TitleLinks = new LinkCollection
@@ -41,7 +41,7 @@ namespace Silverforge.TwitterClient.ViewModels
 
 		public void Initialize()
 		{
-			navigationManager.To<ITwitterViewModel>();
+			navigationManager.To<ITweetViewModel>();
 		}
 	}
 }
