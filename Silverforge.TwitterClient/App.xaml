@@ -1,18 +1,22 @@
 ﻿<Application x:Class="Silverforge.TwitterClient.App"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:local="clr-namespace:Silverforge.TwitterClient">
+			 xmlns:local="clr-namespace:Silverforge.TwitterClient"
+			 xmlns:helpers="clr-namespace:Silverforge.TwitterClient.Helpers">
 
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
+				<ResourceDictionary x:Name="ApplicationTheme" Source="/SilverForge.TwitterClient;component/Assets/SilverForgeTwitterTheme.xaml"/>
 				<ResourceDictionary>
 					<local:ResourceWrapper x:Key="ResourceWrapper" />
 					<local:CaliburnContentLoader x:Key="CaliburnContentLoader" />
+					<helpers:CustomAppearanceManager x:Key="CustomAppearanceManager" />
 					<local:AppBootstrapper x:Key="AppBootstrapper" />
 				</ResourceDictionary>
-				<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
-				<ResourceDictionary Source="/SilverForge.TwitterClient;component/Assets/SilverForgeTwitterTheme.xaml"/>
+				<!--<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
+				<ResourceDictionary Source="/SilverForge.TwitterClient;component/Assets/SilverForgeTwitterTheme.xaml"/>-->
 				<!--<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml"/>-->
 				<!--<ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Dark.xaml"/>-->
 			</ResourceDictionary.MergedDictionaries>

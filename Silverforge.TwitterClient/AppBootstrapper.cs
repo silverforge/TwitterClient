@@ -26,6 +26,9 @@ namespace Silverforge.TwitterClient
 			var caliburnContentLoader = Application.Current.Resources["CaliburnContentLoader"] as CaliburnContentLoader;
 			container.RegisterSingle(caliburnContentLoader);
 
+			var customAppearanceManager = Application.Current.Resources["CustomAppearanceManager"] as CustomAppearanceManager;
+			container.RegisterSingle(customAppearanceManager);
+
 			container.RegisterSingle<IWindowManager, WindowManager>();
 			container.RegisterSingle<IEventAggregator, EventAggregator>();
 			container.RegisterSingle<INavigationManager, NavigationManager>();
@@ -37,7 +40,7 @@ namespace Silverforge.TwitterClient
 			container.Register<ITweetViewModel, TweetViewModel>();
 			container.Register<IAdministrationViewModel, AdministrationViewModel>();
 
-			container.Verify();
+			//container.Verify();
 		}
 
 		protected override object GetInstance(Type service, string key)

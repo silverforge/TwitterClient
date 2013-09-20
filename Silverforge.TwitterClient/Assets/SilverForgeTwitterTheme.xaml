@@ -7,7 +7,6 @@
 
 	<Color x:Key="AccentColor">#ff8b4513</Color>
 
-	<!-- background image taken from http://good-wallpapers.com/ -->
 	<Rectangle x:Key="WindowBackgroundContent" x:Shared="false">
 		<Rectangle.Fill>
 			<SolidColorBrush Color="#ff8b4513" Opacity="0.2"></SolidColorBrush>

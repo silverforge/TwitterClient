@@ -61,6 +61,15 @@ namespace Silverforge.TwitterClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accent color.
+        /// </summary>
+        public static string AccentColor {
+            get {
+                return ResourceManager.GetString("AccentColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Access token.
         /// </summary>
         public static string AccessToken {
@@ -93,6 +102,15 @@ namespace Silverforge.TwitterClient.Properties {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text color.
+        /// </summary>
+        public static string TextColor {
+            get {
+                return ResourceManager.GetString("TextColor", resourceCulture);
             }
         }
         

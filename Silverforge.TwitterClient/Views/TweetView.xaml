@@ -13,6 +13,7 @@
 	<Page.Resources>
 		<converters:BoolToOpacityConverter x:Key="BoolToOpacity" />
 		<BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+		<SolidColorBrush x:Key="ForeColorOfTweet" Color="{Binding Source={StaticResource CustomAppearanceManager}, Path=TextColor}" />
 	</Page.Resources>
 
 	<Grid Margin="0,-50,0,0">
@@ -26,20 +27,20 @@
 
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Border x:Name="Layer" BorderThickness="0" BorderBrush="SaddleBrown" Margin="1,1,1,3" cal:Message.Attach="[Event MouseUp] = [Action ReadTweet($dataContext)]">
+						<Border x:Name="Layer" BorderThickness="0" BorderBrush="{Binding Source={StaticResource CustomAppearanceManager}, Path=AccentColor}" Margin="1,1,1,3" cal:Message.Attach="[Event MouseUp] = [Action ReadTweet($dataContext)]">
 							<Border.Background>
-								<SolidColorBrush Color="SaddleBrown" Opacity="{Binding IsNew, Converter={StaticResource BoolToOpacity}}" />
+								<SolidColorBrush Color="{Binding Source={StaticResource CustomAppearanceManager}, Path=AccentColor}" Opacity="{Binding IsNew, Converter={StaticResource BoolToOpacity}}" />
 							</Border.Background>
 
 							<Grid>
 								<Grid HorizontalAlignment="Right">
 									<Image Source="../Images/star.png" Visibility="{Binding IsFavorited, Converter={StaticResource BoolToVisibility}}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="16" Height="16" Margin="1,3,1,1" />
-									<TextBlock Text="{Binding Created}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Right" Margin="1,5,20,1" />
+									<TextBlock Text="{Binding Created}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Right" Margin="1,5,20,1" Foreground="{StaticResource ForeColorOfTweet}" />
 								</Grid>
 
 								<Expander IsExpanded="True">
 									<Expander.Header>
-										<TextBlock Text="{Binding UserFullName}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="1" />
+										<TextBlock Text="{Binding UserFullName}" Foreground="{StaticResource ForeColorOfTweet}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="1" />
 									</Expander.Header>
 
 									<Grid>
@@ -56,14 +57,14 @@
 												<RowDefinition Height="Auto"/>
 											</Grid.RowDefinitions>
 
-											<mui:BBCodeBlock BBCode="{Binding Text}" TextWrapping="Wrap"></mui:BBCodeBlock>
+											<mui:BBCodeBlock BBCode="{Binding Text}" TextWrapping="Wrap" Foreground="{StaticResource ForeColorOfTweet}" />
 
 											<StackPanel Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Right">
 												<Button x:Name="Favorite" cal:Message.Attach="Favorite($dataContext)">
 													<Button.Content>
 														<StackPanel Orientation="Horizontal">
 															<Image Source="../Images/star.png" Width="16" Height="16" Margin="1,1,10,1" />
-															<TextBlock Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Favorite}" />															
+															<TextBlock Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Favorite}" />
 														</StackPanel>
 													</Button.Content>
 												</Button>
