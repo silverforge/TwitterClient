@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Reactive.Linq;
 using Caliburn.Micro;
 using Silverforge.TwitterClient.Common;
@@ -29,9 +30,14 @@ namespace Silverforge.TwitterClient.ViewModels
 
 		public void Favorite(Tweet tweet)
 		{
-			var favoriteTweet = service.FavoriteTweet(new FavoriteTweetOptions { Id = tweet.Id });
+			if (tweet.IsFavorited)
+				service.UnfavoriteTweet(new UnfavoriteTweetOptions { Id = tweet.Id });
+			else
+				service.FavoriteTweet(new FavoriteTweetOptions { Id = tweet.Id });
+
 			var twitterResponse = service.Response;
-			tweet.IsFavorited = true;
+			if (twitterResponse.StatusCode == HttpStatusCode.OK)
+				tweet.IsFavorited = !tweet.IsFavorited;
 		}
 
 		protected override void OnViewLoaded(object view)
