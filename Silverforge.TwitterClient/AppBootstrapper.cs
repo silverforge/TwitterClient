@@ -1,7 +1,9 @@
 using System.Windows;
+using System.Windows.Media;
 using Silverforge.TwitterClient.Common;
 using Silverforge.TwitterClient.Common.Definition;
 using Silverforge.TwitterClient.Helpers;
+using Silverforge.TwitterClient.Helpers.View;
 using Silverforge.TwitterClient.ViewModels;
 using SimpleInjector;
 
@@ -39,6 +41,7 @@ namespace Silverforge.TwitterClient
 			container.RegisterSingle<IShellViewModel, ShellViewModel>();
 			container.Register<ITweetViewModel, TweetViewModel>();
 			container.Register<IAdministrationViewModel, AdministrationViewModel>();
+			container.Register<ITweetTimer, TweetTimer>();
 
 			//container.Verify();
 		}
@@ -66,6 +69,13 @@ namespace Silverforge.TwitterClient
 		{
 			base.OnStartup(sender, e);
 			IoC.Get<IShellViewModel>().Initialize();
+			var accentColorHex = IoC.Get<IAppSettings>().AccentColorHex;
+			var textColorHex = IoC.Get<IAppSettings>().TextColorHex;
+
+			if (!string.IsNullOrEmpty(accentColorHex))
+				IoC.Get<CustomAppearanceManager>().SetAccentColor((Color)ColorConverter.ConvertFromString(accentColorHex));
+			if (!string.IsNullOrEmpty(textColorHex))
+				IoC.Get<CustomAppearanceManager>().TextColor = (Color) ColorConverter.ConvertFromString(textColorHex);
 		}
 	}
 }

@@ -5,7 +5,7 @@ using Caliburn.Micro;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 
-namespace Silverforge.TwitterClient.Helpers
+namespace Silverforge.TwitterClient.Helpers.View
 {
 	public class CustomAppearanceManager : PropertyChangedBase
 	{

@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using FirstFloor.ModernUI.Windows.Controls;
 using Silverforge.TwitterClient.Helpers;
+using Silverforge.TwitterClient.Helpers.View;
 using Application = System.Windows.Application;
 
 namespace Silverforge.TwitterClient.Views

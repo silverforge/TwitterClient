@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Reactive.Linq;
 using Caliburn.Micro;
 using Silverforge.TwitterClient.Common;
 using Silverforge.TwitterClient.Common.Definition;
@@ -13,11 +13,13 @@ namespace Silverforge.TwitterClient.ViewModels
 	public class TweetViewModel : BaseViewModel, ITweetViewModel
 	{
 		private readonly IAppSettings appSettings;
+		private readonly ITweetTimer tweetTimer;
 		private TwitterService service;
 
-		public TweetViewModel(IAppSettings appSettings)
+		public TweetViewModel(IAppSettings appSettings, ITweetTimer tweetTimer)
 		{
 			this.appSettings = appSettings;
+			this.tweetTimer = tweetTimer;
 			Tweets = new BindableCollection<Tweet>();
 		}
 
@@ -45,15 +47,25 @@ namespace Silverforge.TwitterClient.ViewModels
 			base.OnViewLoaded(view);
 
 			service = new TwitterService(appSettings.ConsumerKey,
-			                             appSettings.ConsumerSecret,
-			                             appSettings.AccessToken,
-			                             appSettings.AccessTokenSecret)
+																	 appSettings.ConsumerSecret,
+																	 appSettings.AccessToken,
+																	 appSettings.AccessTokenSecret)
 				{
 					IncludeRetweets = true
 				};
 
-
-			Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(60)).Subscribe(next => AddNewTweets());
+			tweetTimer
+				.Subject
+				.Subscribe(next => AddNewTweets(),
+				           err =>
+					           {
+						           Debug.WriteLine("Error");
+					           },
+				           () =>
+					           {
+						           Debug.WriteLine("Completed");
+					           });
+			tweetTimer.Start();
 		}
 
 		private void AddNewTweets()
@@ -63,15 +75,22 @@ namespace Silverforge.TwitterClient.ViewModels
 				maxId = Tweets.Max(t => t.Id);
 
 			var downloadedTweets =
-				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions {Count = 40, SinceId = maxId})
-				.ToArray();
+				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = maxId });
 
-			if (!downloadedTweets.Any())
+			if ((int)service.Response.StatusCode == 429) // NOTE [MGJ] : Rate limit exceeded
+			{
+				service.GetRateLimitStatus(new GetRateLimitStatusOptions());
+				tweetTimer.Delay(service.Response.RateLimitStatus.ResetTime);
+			}
+
+			if (downloadedTweets == null)
 				return;
 
-			for (var i = downloadedTweets.Length - 1; i >= 0; i--)
+			var tweets = downloadedTweets.ToArray();
+
+			for (var i = tweets.Length - 1; i >= 0; i--)
 			{
-				var ts = downloadedTweets[i];
+				var ts = tweets[i];
 				Tweets.Insert(0, new Tweet
 				{
 					Id = ts.Id,

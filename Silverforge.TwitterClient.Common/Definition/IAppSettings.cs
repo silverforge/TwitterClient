@@ -7,6 +7,12 @@
 		string AccessToken { get; }
 		string AccessTokenSecret { get; }
 
-		int PollInterval { get; set; }
+		int PollInterval { get; }
+
+		string AccentColorHex { get; }
+		string TextColorHex { get; }
+
+		void SetAccentColor(string color);
+		void SetTextColor(string color);
 	}
 }

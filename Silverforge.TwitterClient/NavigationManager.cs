@@ -5,6 +5,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using Silverforge.TwitterClient.Common;
 using Silverforge.TwitterClient.Common.Definition;
 using Silverforge.TwitterClient.Helpers;
+using Silverforge.TwitterClient.Helpers.View;
 
 namespace Silverforge.TwitterClient
 {

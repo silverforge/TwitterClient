@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
-namespace Silverforge.TwitterClient.Helpers
+namespace Silverforge.TwitterClient.Helpers.View
 {
 	public class ScrollOnNewItem : Behavior<ItemsControl>
 	{

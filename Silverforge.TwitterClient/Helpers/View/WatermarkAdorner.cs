@@ -6,7 +6,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace Silverforge.TwitterClient.Helpers
+namespace Silverforge.TwitterClient.Helpers.View
 {
 	internal class WatermarkAdorner : Adorner
 	{

@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 
-namespace Silverforge.TwitterClient.Helpers
+namespace Silverforge.TwitterClient.Helpers.View
 {
 	public class WatermarkService
 	{

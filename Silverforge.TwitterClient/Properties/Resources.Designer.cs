@@ -115,7 +115,7 @@ namespace Silverforge.TwitterClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to mgj&apos;s tweet watcher.
+        ///   Looks up a localized string similar to tweet watcher.
         /// </summary>
         public static string Title {
             get {

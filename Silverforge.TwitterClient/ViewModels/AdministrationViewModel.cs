@@ -1,19 +1,20 @@
 ﻿using System.Windows.Media;
-using FirstFloor.ModernUI.Presentation;
 using Silverforge.TwitterClient.Common.Definition;
-using Silverforge.TwitterClient.Helpers;
+using Silverforge.TwitterClient.Helpers.View;
 
 namespace Silverforge.TwitterClient.ViewModels
 {
 	public class AdministrationViewModel : BaseViewModel, IAdministrationViewModel
 	{
 		private readonly CustomAppearanceManager appearanceManager;
+		private readonly IAppSettings appSettings;
 		private Color selectedTextColor;
 		private Color selectedAccentColor;
 
-		public AdministrationViewModel(CustomAppearanceManager appearanceManager)
+		public AdministrationViewModel(CustomAppearanceManager appearanceManager, IAppSettings appSettings)
 		{
 			this.appearanceManager = appearanceManager;
+			this.appSettings = appSettings;
 			selectedAccentColor = appearanceManager.AccentColor;
 			selectedTextColor = appearanceManager.TextColor;
 		}
@@ -26,6 +27,7 @@ namespace Silverforge.TwitterClient.ViewModels
 				selectedTextColor = value;
 				NotifyOfPropertyChange(() => SelectedTextColor);
 				appearanceManager.TextColor = selectedTextColor;
+				appSettings.SetTextColor(selectedTextColor.ToString());
 			}
 		}
 
@@ -37,6 +39,7 @@ namespace Silverforge.TwitterClient.ViewModels
 				selectedAccentColor = value;
 				NotifyOfPropertyChange(() => SelectedAccentColor);
 				appearanceManager.SetAccentColor(selectedAccentColor);
+				appSettings.SetAccentColor(selectedAccentColor.ToString());
 			}
 		}
 	}
