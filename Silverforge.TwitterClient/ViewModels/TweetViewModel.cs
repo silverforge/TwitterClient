@@ -42,6 +42,30 @@ namespace Silverforge.TwitterClient.ViewModels
 				tweet.IsFavorited = !tweet.IsFavorited;
 		}
 
+		public void SetAllRead()
+		{
+			foreach (var tweet in Tweets)
+			{
+				tweet.IsNew = false;
+			}
+		}
+
+		public void CollapseAll()
+		{
+			foreach (var tweet in Tweets)
+			{
+				tweet.IsExpanded = false;
+			}
+		}
+
+		public void ExpandAll()
+		{
+			foreach (var tweet in Tweets)
+			{
+				tweet.IsExpanded = true;
+			}
+		}
+
 		protected override void OnViewLoaded(object view)
 		{
 			base.OnViewLoaded(view);
@@ -70,12 +94,12 @@ namespace Silverforge.TwitterClient.ViewModels
 
 		private void AddNewTweets()
 		{
-			long? maxId = null;
+			long? sinceId = null;
 			if (Tweets.Count > 0)
-				maxId = Tweets.Max(t => t.Id);
+				sinceId = Tweets.Max(t => t.Id);
 
 			var downloadedTweets =
-				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = maxId });
+				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = sinceId });
 
 			if ((int)service.Response.StatusCode == 429) // NOTE [MGJ] : Rate limit exceeded
 			{
@@ -118,7 +142,8 @@ namespace Silverforge.TwitterClient.ViewModels
 						UserFullName = "neo4j",
 						Created = FormatHelper.UniDate(DateTime.Now),
 						IsNew = true,
-						IsFavorited = true
+						IsFavorited = true,
+						IsExpanded = true
 					});
 			}
 		}

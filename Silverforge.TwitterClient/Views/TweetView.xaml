@@ -17,8 +17,18 @@
 	</Page.Resources>
 
 	<Grid Margin="0,-50,0,0">
-		<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-			<ItemsControl ItemsSource="{Binding Tweets}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<StackPanel Orientation="Horizontal">
+			<Button x:Name="CollapseAll" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.CollapseAll}" />
+			<Button x:Name="ExpandAll" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ExpandAll}" />
+		</StackPanel>
+
+		<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+			<ItemsControl x:Name="Tweets" ItemsSource="{Binding Tweets}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Border x:Name="Layer" BorderThickness="0" BorderBrush="{Binding Source={StaticResource CustomAppearanceManager}, Path=AccentColor}" Margin="1,1,1,3" cal:Message.Attach="[Event MouseUp] = [Action ReadTweet($dataContext)]">
@@ -44,7 +54,7 @@
 									<TextBlock Text="{Binding Created}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Right" Margin="1,5,20,1" Foreground="{StaticResource ForeColorOfTweet}" />
 								</Grid>
 
-								<Expander IsExpanded="True">
+								<Expander x:Name="TweetExpander" IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
 									<Expander.Header>
 										<TextBlock Text="{Binding UserFullName}" Foreground="{StaticResource ForeColorOfTweet}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="1" />
 									</Expander.Header>

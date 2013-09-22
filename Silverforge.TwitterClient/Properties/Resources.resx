@@ -126,6 +126,12 @@
   <data name="AccessTokenSecret" xml:space="preserve">
     <value>Access token secret</value>
   </data>
+  <data name="CollapseAll" xml:space="preserve">
+    <value>Collapse all</value>
+  </data>
+  <data name="ExpandAll" xml:space="preserve">
+    <value>Expand all</value>
+  </data>
   <data name="Favorite" xml:space="preserve">
     <value>Favorite</value>
   </data>

@@ -11,6 +11,7 @@ namespace Silverforge.TwitterClient.Model
 		private bool isNew;
 		private bool isFavorited;
 		private string created;
+		private bool isExpanded;
 
 		public long Id
 		{
@@ -79,6 +80,16 @@ namespace Silverforge.TwitterClient.Model
 			{
 				isFavorited = value;
 				NotifyOfPropertyChange(() => IsFavorited);
+			}
+		}
+
+		public bool IsExpanded
+		{
+			get { return isExpanded; }
+			set
+			{
+				isExpanded = value;
+				NotifyOfPropertyChange(() => IsExpanded);
 			}
 		}
 	}
