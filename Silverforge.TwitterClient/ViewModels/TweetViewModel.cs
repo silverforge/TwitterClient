@@ -15,6 +15,9 @@ namespace Silverforge.TwitterClient.ViewModels
 		private readonly IAppSettings appSettings;
 		private readonly ITweetTimer tweetTimer;
 		private TwitterService service;
+		private string rateRatio;
+		private string resetTime;
+		private bool isDelayed;
 
 		public TweetViewModel(IAppSettings appSettings, ITweetTimer tweetTimer)
 		{
@@ -24,6 +27,36 @@ namespace Silverforge.TwitterClient.ViewModels
 		}
 
 		public BindableCollection<Tweet> Tweets { get; private set; }
+
+		public string RateRatio
+		{
+			get { return rateRatio; }
+			set
+			{
+				rateRatio = value;
+				NotifyOfPropertyChange(() => RateRatio);
+			}
+		}
+
+		public string ResetTime
+		{
+			get { return resetTime; }
+			set
+			{
+				resetTime = value;
+				NotifyOfPropertyChange(() => ResetTime);
+			}
+		}
+
+		public bool IsDelayed
+		{
+			get { return isDelayed; }
+			set
+			{
+				isDelayed = value;
+				NotifyOfPropertyChange(() => IsDelayed);
+			}
+		}
 
 		public void ReadTweet(Tweet tweet)
 		{
@@ -101,10 +134,19 @@ namespace Silverforge.TwitterClient.ViewModels
 			var downloadedTweets =
 				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = sinceId });
 
+			var twitterRateLimitStatus = service.Response.RateLimitStatus;
+			RateRatio = String.Format("{0} / {1}", twitterRateLimitStatus.RemainingHits, twitterRateLimitStatus.HourlyLimit);
+			ResetTime = String.Format("{0:yyyy-MM-dd HH:mm}", twitterRateLimitStatus.ResetTime);
+			IsDelayed = false;
+
 			if ((int)service.Response.StatusCode == 429) // NOTE [MGJ] : Rate limit exceeded
 			{
 				service.GetRateLimitStatus(new GetRateLimitStatusOptions());
 				tweetTimer.Delay(service.Response.RateLimitStatus.ResetTime);
+				twitterRateLimitStatus = service.Response.RateLimitStatus;
+				RateRatio = String.Format("{0} / {1}", twitterRateLimitStatus.RemainingHits, twitterRateLimitStatus.HourlyLimit);
+				ResetTime = String.Format("{0:yyyy-MM-dd HH:mm}", twitterRateLimitStatus.ResetTime);
+				IsDelayed = true;
 			}
 
 			if (downloadedTweets == null)
@@ -123,7 +165,8 @@ namespace Silverforge.TwitterClient.ViewModels
 					UserFullName = ts.User.Name,
 					Created = FormatHelper.UniDate(ts.CreatedDate),
 					IsNew = true,
-					IsFavorited = ts.IsFavorited
+					IsFavorited = ts.IsFavorited, 
+					IsExpanded = true
 				});
 			}
 		}

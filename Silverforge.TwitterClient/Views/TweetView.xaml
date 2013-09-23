@@ -22,10 +22,32 @@
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<StackPanel Orientation="Horizontal">
-			<Button x:Name="CollapseAll" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.CollapseAll}" />
-			<Button x:Name="ExpandAll" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ExpandAll}" />
-		</StackPanel>
+		<Expander Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.AdditionalInfo}" IsExpanded="False">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Grid.ColumnSpan="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ServiceDelayText}" Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}" />
+				<TextBlock Grid.Row="1" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ResetTime}" Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
+				<TextBlock Grid.Row="1" Grid.Column="1" x:Name="ResetTime" Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+				<TextBlock Grid.Row="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Ratio}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
+				<TextBlock Grid.Row="2" Grid.Column="1" x:Name="RateRatio" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+				<StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="3">
+					<Button x:Name="CollapseAll" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.CollapseAll}" />
+					<Button x:Name="ExpandAll" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ExpandAll}" />
+				</StackPanel>
+			</Grid>
+		</Expander>
 
 		<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
 			<ItemsControl x:Name="Tweets" ItemsSource="{Binding Tweets}">
@@ -40,9 +62,9 @@
 									<BeginStoryboard>
 										<Storyboard>
 											<DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                     Duration="00:00:01"
-                                                     From="0"
-                                                     To="1" />
+													 Duration="00:00:01"
+													 From="0"
+													 To="1" />
 										</Storyboard>
 									</BeginStoryboard>
 								</EventTrigger>

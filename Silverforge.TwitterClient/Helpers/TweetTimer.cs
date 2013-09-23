@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Silverforge.TwitterClient.Common;
@@ -37,6 +38,7 @@ namespace Silverforge.TwitterClient.Helpers
 					err => timer.OnError(err),
 					() => timer.OnCompleted());
 			Status = TweetTimerStatus.Started;
+			Debug.WriteLine("TweetService started.");
 		}
 
 		public void Stop()
@@ -46,6 +48,7 @@ namespace Silverforge.TwitterClient.Helpers
 
 			internalTimer.Dispose();
 			Status = TweetTimerStatus.Stopped;
+			Debug.WriteLine("TweetService stopped.");
 		}
 
 		public void Delay(DateTime date)
@@ -61,6 +64,9 @@ namespace Silverforge.TwitterClient.Helpers
 			Observable
 				.Timer(due)
 				.Subscribe(n => Start());
+
+			var format = String.Format("TweetService is delayed to {0} m {1} sec", due.Minutes, due.Seconds);
+			Debug.WriteLine(format);
 		}
 	}
 }

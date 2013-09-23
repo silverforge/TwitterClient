@@ -88,6 +88,15 @@ namespace Silverforge.TwitterClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional info.
+        /// </summary>
+        public static string AdditionalInfo {
+            get {
+                return ResourceManager.GetString("AdditionalInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collapse all.
         /// </summary>
         public static string CollapseAll {
@@ -120,6 +129,33 @@ namespace Silverforge.TwitterClient.Properties {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ratio :.
+        /// </summary>
+        public static string Ratio {
+            get {
+                return ResourceManager.GetString("Ratio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart at.
+        /// </summary>
+        public static string ResetTime {
+            get {
+                return ResourceManager.GetString("ResetTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service is delayed by twitter server.
+        /// </summary>
+        public static string ServiceDelayText {
+            get {
+                return ResourceManager.GetString("ServiceDelayText", resourceCulture);
             }
         }
         
