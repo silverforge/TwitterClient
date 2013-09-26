@@ -142,6 +142,15 @@ namespace Silverforge.TwitterClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Read all tweets.
+        /// </summary>
+        public static string ReadAll {
+            get {
+                return ResourceManager.GetString("ReadAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart at.
         /// </summary>
         public static string ResetTime {

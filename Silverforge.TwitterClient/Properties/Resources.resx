@@ -144,6 +144,9 @@
   <data name="Ratio" xml:space="preserve">
     <value>Ratio :</value>
   </data>
+  <data name="ReadAll" xml:space="preserve">
+    <value>Read all tweets</value>
+  </data>
   <data name="ResetTime" xml:space="preserve">
     <value>Restart at</value>
   </data>
