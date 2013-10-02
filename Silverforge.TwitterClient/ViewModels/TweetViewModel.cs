@@ -66,9 +66,9 @@ namespace Silverforge.TwitterClient.ViewModels
 		public void Favorite(Tweet tweet)
 		{
 			if (tweet.IsFavorited)
-				service.UnfavoriteTweet(new UnfavoriteTweetOptions { Id = tweet.Id });
+				service.UnfavoriteTweet(new UnfavoriteTweetOptions { Id = tweet.OriginalId });
 			else
-				service.FavoriteTweet(new FavoriteTweetOptions { Id = tweet.Id });
+				service.FavoriteTweet(new FavoriteTweetOptions { Id = tweet.OriginalId });
 
 			var twitterResponse = service.Response;
 			if (twitterResponse.StatusCode == HttpStatusCode.OK)
@@ -114,14 +114,14 @@ namespace Silverforge.TwitterClient.ViewModels
 			tweetTimer
 				.Subject
 				.Subscribe(next => AddNewTweets(),
-				           err =>
-					           {
-						           Debug.WriteLine("Error");
-					           },
-				           () =>
-					           {
-						           Debug.WriteLine("Completed");
-					           });
+						   err =>
+						   {
+							   Debug.WriteLine("Error");
+						   },
+						   () =>
+						   {
+							   Debug.WriteLine("Completed");
+						   });
 			tweetTimer.Start();
 		}
 
@@ -129,7 +129,7 @@ namespace Silverforge.TwitterClient.ViewModels
 		{
 			long? sinceId = null;
 			if (Tweets.Count > 0)
-				sinceId = Tweets.Max(t => t.Id);
+				sinceId = Tweets.Max(t => t.OriginalId);
 
 			var downloadedTweets =
 				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = sinceId });
@@ -153,42 +153,39 @@ namespace Silverforge.TwitterClient.ViewModels
 				return;
 
 			var tweets = downloadedTweets.ToArray();
-
 			for (var i = tweets.Length - 1; i >= 0; i--)
 			{
-				var ts = tweets[i];
-				Tweets.Insert(0, new Tweet
-				{
-					Id = ts.Id,
-					ImageUrl = ts.User.ProfileImageUrl,
-					Text = FormatHelper.HtmlToBbCodeText(ts.TextAsHtml),
-					UserFullName = ts.User.Name,
-					Created = FormatHelper.UniDate(ts.CreatedDate),
-					IsNew = true,
-					IsFavorited = ts.IsFavorited, 
-					IsExpanded = true
-				});
+				Tweets.Insert(0, TweetMapper(tweets[i]));
 			}
 		}
 
-		private void AddNewTweetsStatic()
+		private static Tweet TweetMapper(TwitterStatus originalTweet)
 		{
-			for (var i = 0; i < 4; i++)
+			var tweet = new Tweet();
+			TwitterStatus twitterStatus;
+			if (originalTweet.RetweetedStatus != null)
 			{
-				Tweets.Insert(0, new Tweet
-					{
-						Id = 1,
-						ImageUrl = "http://a0.twimg.com/profile_images/195275920/square-logo-no-text-2_normal.png",
-						Text =
-							FormatHelper.HtmlToBbCodeText(
-								"RT @andyjohnw: Today we start adding a sharding @neo4j adapter to @phalconphp with option of async writes via #redis  #geekexcitement"),
-						UserFullName = "neo4j",
-						Created = FormatHelper.UniDate(DateTime.Now),
-						IsNew = true,
-						IsFavorited = true,
-						IsExpanded = true
-					});
+				tweet.OriginalId = originalTweet.Id;
+				tweet.IsRetweeted = true;
+				tweet.RetweetedBy = originalTweet.User.Name;
+				twitterStatus = originalTweet.RetweetedStatus;
 			}
+			else
+			{
+				twitterStatus = originalTweet;
+				tweet.OriginalId = twitterStatus.Id;
+			}
+
+			tweet.Id = twitterStatus.Id;
+			tweet.ImageUrl = twitterStatus.User.ProfileImageUrl;
+			tweet.Text = FormatHelper.HtmlToBbCodeText(twitterStatus.TextAsHtml);
+			tweet.UserFullName = twitterStatus.User.Name;
+			tweet.Created = FormatHelper.UniDate(twitterStatus.CreatedDate);
+			tweet.IsNew = true;
+			tweet.IsFavorited = twitterStatus.IsFavorited;
+			tweet.IsExpanded = true;
+
+			return tweet;
 		}
 	}
 }

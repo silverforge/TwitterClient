@@ -12,6 +12,19 @@ namespace Silverforge.TwitterClient.Model
 		private bool isFavorited;
 		private string created;
 		private bool isExpanded;
+		private bool isRetweeted;
+		private string retweetedBy;
+		private long originalId;
+
+		public long OriginalId
+		{
+			get { return originalId; }
+			set
+			{
+				originalId = value;
+				NotifyOfPropertyChange(() => OriginalId);
+			}
+		}
 
 		public long Id
 		{
@@ -90,6 +103,26 @@ namespace Silverforge.TwitterClient.Model
 			{
 				isExpanded = value;
 				NotifyOfPropertyChange(() => IsExpanded);
+			}
+		}
+
+		public bool IsRetweeted
+		{
+			get { return isRetweeted; }
+			set
+			{
+				isRetweeted = value;
+				NotifyOfPropertyChange(() => IsRetweeted);
+			}
+		}
+
+		public string RetweetedBy
+		{
+			get { return retweetedBy; }
+			set
+			{
+				retweetedBy = value;
+				NotifyOfPropertyChange(() => RetweetedBy);
 			}
 		}
 	}

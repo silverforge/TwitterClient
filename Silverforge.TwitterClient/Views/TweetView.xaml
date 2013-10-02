@@ -14,40 +14,37 @@
 		<converters:BoolToOpacityConverter x:Key="BoolToOpacity" />
 		<BooleanToVisibilityConverter x:Key="BoolToVisibility" />
 		<SolidColorBrush x:Key="ForeColorOfTweet" Color="{Binding Source={StaticResource CustomAppearanceManager}, Path=TextColor}" />
+
+		<Style TargetType="TextBlock">
+			<Setter Property="FontFamily" Value="Calibri"></Setter>
+			<Setter Property="FontSize" Value="16"></Setter>
+		</Style>
 	</Page.Resources>
 
-    <Grid x:Name="Root" Margin="0,-50,0,0">
+	<Grid x:Name="Root" Margin="0,-50,0,0">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<Expander Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.AdditionalInfo}" IsExpanded="False">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
+		<Grid Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
 
-				<TextBlock Grid.ColumnSpan="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ServiceDelayText}" Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}" />
-				<TextBlock Grid.Row="1" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ResetTime}" Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
-				<TextBlock Grid.Row="1" Grid.Column="1" x:Name="ResetTime" Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
+			<TextBlock Grid.ColumnSpan="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ServiceDelayText}" />
+			<TextBlock Grid.Row="1" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ResetTime}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
+			<TextBlock Grid.Row="1" Grid.Column="1" x:Name="ResetTime" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
-				<TextBlock Grid.Row="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Ratio}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
-				<TextBlock Grid.Row="2" Grid.Column="1" x:Name="RateRatio" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
-
-				<StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="3">
-					<Button x:Name="CollapseAll" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.CollapseAll}" />
-					<Button x:Name="ExpandAll" Content="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ExpandAll}" />
-				</StackPanel>
-			</Grid>
-		</Expander>
+			<TextBlock Grid.Row="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Ratio}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
+			<TextBlock Grid.Row="2" Grid.Column="1" x:Name="RateRatio" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
+		</Grid>
 
 		<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
 			<ItemsControl x:Name="Tweets" ItemsSource="{Binding Tweets}">
@@ -69,21 +66,40 @@
 									</BeginStoryboard>
 								</EventTrigger>
 							</Border.Triggers>
-                            <Border.ContextMenu>
-                                <ContextMenu>
-                                    <ContextMenu.ItemsSource>
-                                        <CompositeCollection>
-                                            <MenuItem 
+							<Border.ContextMenu>
+								<ContextMenu>
+									<ContextMenu.ItemsSource>
+										<CompositeCollection>
+											<MenuItem 
 												Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ReadAll}" 
 												cal:Message.Attach="SetAllRead"
 												cal:Action.TargetWithoutContext="{Binding DataContext, Source={x:Reference Root}}"
 												/>
-                                        </CompositeCollection>
-                                    </ContextMenu.ItemsSource>
-                                </ContextMenu>
-                            </Border.ContextMenu>
+											<MenuItem 
+												Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Favorite}" 
+												cal:Message.Attach="Favorite($dataContext)"
+												cal:Action.TargetWithoutContext="{Binding DataContext, Source={x:Reference Root}}"
+												>
+												<MenuItem.Icon>
+													<Image Source="../Images/star.png" Width="16" Height="16"  />
+												</MenuItem.Icon>
+											</MenuItem>
+											<MenuItem 
+												Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.CollapseAll}" 
+												cal:Message.Attach="CollapseAll"
+												cal:Action.TargetWithoutContext="{Binding DataContext, Source={x:Reference Root}}"
+												/>
+											<MenuItem 
+												Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ExpandAll}" 
+												cal:Message.Attach="ExpandAll"
+												cal:Action.TargetWithoutContext="{Binding DataContext, Source={x:Reference Root}}"
+												/>
+										</CompositeCollection>
+									</ContextMenu.ItemsSource>
+								</ContextMenu>
+							</Border.ContextMenu>
 
-                            <Grid>
+							<Grid>
 								<Grid HorizontalAlignment="Right">
 									<Image Source="../Images/star.png" Visibility="{Binding IsFavorited, Converter={StaticResource BoolToVisibility}}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="16" Height="16" Margin="1,3,1,1" />
 									<TextBlock Text="{Binding Created}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Right" Margin="1,5,20,1" Foreground="{StaticResource ForeColorOfTweet}" />
@@ -91,7 +107,11 @@
 
 								<Expander x:Name="TweetExpander" IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
 									<Expander.Header>
-										<TextBlock Text="{Binding UserFullName}" Foreground="{StaticResource ForeColorOfTweet}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="1" />
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="{Binding UserFullName}" Foreground="{StaticResource ForeColorOfTweet}" FontWeight="Normal" FontSize="10" HorizontalAlignment="Left" Margin="1" />
+											<TextBlock Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.By}" Foreground="{StaticResource ForeColorOfTweet}" Visibility="{Binding IsRetweeted, Converter={StaticResource BoolToVisibility}}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="3,1" />
+											<TextBlock Text="{Binding RetweetedBy}" Foreground="{StaticResource ForeColorOfTweet}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" Margin="1,1" />
+										</StackPanel>
 									</Expander.Header>
 
 									<Grid>
@@ -105,21 +125,9 @@
 										<Grid Grid.Column="1">
 											<Grid.RowDefinitions>
 												<RowDefinition Height="*"/>
-												<RowDefinition Height="Auto"/>
 											</Grid.RowDefinitions>
 
 											<mui:BBCodeBlock BBCode="{Binding Text}" TextWrapping="Wrap" Foreground="{StaticResource ForeColorOfTweet}" />
-
-											<StackPanel Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Right">
-												<Button x:Name="Favorite" cal:Message.Attach="Favorite($dataContext)">
-													<Button.Content>
-														<StackPanel Orientation="Horizontal">
-															<Image Source="../Images/star.png" Width="16" Height="16" Margin="1,1,10,1" />
-															<TextBlock Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Favorite}" />
-														</StackPanel>
-													</Button.Content>
-												</Button>
-											</StackPanel>
 										</Grid>
 									</Grid>
 								</Expander>

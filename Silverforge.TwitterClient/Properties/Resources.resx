@@ -129,8 +129,14 @@
   <data name="AdditionalInfo" xml:space="preserve">
     <value>Additional info</value>
   </data>
+  <data name="By" xml:space="preserve">
+    <value>by</value>
+  </data>
   <data name="CollapseAll" xml:space="preserve">
     <value>Collapse all</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details...</value>
   </data>
   <data name="ExpandAll" xml:space="preserve">
     <value>Expand all</value>
