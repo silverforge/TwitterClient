@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -12,12 +13,19 @@ namespace Silverforge.TwitterClient.ViewModels
 {
 	public class TweetViewModel : BaseViewModel, ITweetViewModel
 	{
+		private enum ListPositionType : byte
+		{
+			Top,
+			Bottom
+		}
+
 		private readonly IAppSettings appSettings;
 		private readonly ITweetTimer tweetTimer;
 		private TwitterService service;
 		private string rateRatio;
 		private string resetTime;
 		private bool isDelayed;
+		private bool isLoading;
 
 		public TweetViewModel(IAppSettings appSettings, ITweetTimer tweetTimer)
 		{
@@ -99,6 +107,17 @@ namespace Silverforge.TwitterClient.ViewModels
 			}
 		}
 
+		public void LoadMoreTweets()
+		{
+			if (isLoading)
+				return;
+
+			var historicalTweets =
+				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, MaxId = Tweets.Min(t => t.OriginalId) });
+
+			AddNewTweets(historicalTweets, ListPositionType.Bottom);
+		}
+
 		protected override void OnViewLoaded(object view)
 		{
 			base.OnViewLoaded(view);
@@ -113,7 +132,7 @@ namespace Silverforge.TwitterClient.ViewModels
 
 			tweetTimer
 				.Subject
-				.Subscribe(next => AddNewTweets(),
+				.Subscribe(next => DownloadNewTweets(),
 						   err =>
 						   {
 							   Debug.WriteLine("Error");
@@ -125,7 +144,7 @@ namespace Silverforge.TwitterClient.ViewModels
 			tweetTimer.Start();
 		}
 
-		private void AddNewTweets()
+		private void DownloadNewTweets()
 		{
 			long? sinceId = null;
 			if (Tweets.Count > 0)
@@ -133,6 +152,13 @@ namespace Silverforge.TwitterClient.ViewModels
 
 			var downloadedTweets =
 				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = sinceId });
+
+			AddNewTweets(downloadedTweets);
+		}
+
+		private void AddNewTweets(IEnumerable<TwitterStatus> downloadedTweets, ListPositionType listPositionType = ListPositionType.Top)
+		{
+			isLoading = true;
 
 			var twitterRateLimitStatus = service.Response.RateLimitStatus;
 			RateRatio = String.Format("{0} / {1}", twitterRateLimitStatus.RemainingHits, twitterRateLimitStatus.HourlyLimit);
@@ -153,10 +179,23 @@ namespace Silverforge.TwitterClient.ViewModels
 				return;
 
 			var tweets = downloadedTweets.ToArray();
-			for (var i = tweets.Length - 1; i >= 0; i--)
+
+			if (listPositionType == ListPositionType.Top)
 			{
-				Tweets.Insert(0, TweetMapper(tweets[i]));
+				for (var i = tweets.Length - 1; i >= 0; i--)
+				{
+					Tweets.Insert(0, TweetMapper(tweets[i]));
+				}
 			}
+			else
+			{
+				foreach (var ts in tweets.Where(ts => Tweets.FirstOrDefault(t => t.OriginalId == ts.Id) == null))
+				{
+					Tweets.Add(TweetMapper(ts));
+				}
+			}
+
+			isLoading = false;
 		}
 
 		private static Tweet TweetMapper(TwitterStatus originalTweet)

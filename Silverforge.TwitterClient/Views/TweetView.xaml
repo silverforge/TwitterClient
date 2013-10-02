@@ -46,7 +46,7 @@
 			<TextBlock Grid.Row="2" Grid.Column="1" x:Name="RateRatio" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
 		</Grid>
 
-		<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+		<ScrollViewer x:Name="MainScroll" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
 			<ItemsControl x:Name="Tweets" ItemsSource="{Binding Tweets}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
