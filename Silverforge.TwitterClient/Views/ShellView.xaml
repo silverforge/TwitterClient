@@ -6,7 +6,8 @@
 		IsTitleVisible="True"
 		Title="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Title}"
 		Height="500" 
-		Width="300"
+		Width="400"
+
 		MaxWidth="500"
 		ContentLoader="{StaticResource CaliburnContentLoader}"
 		ContentSource="{Binding CurrentContentUri}"

@@ -1,14 +1,14 @@
-﻿<Page x:Class="Silverforge.TwitterClient.Views.TweetView"
+﻿<Page x:Class="Silverforge.TwitterClient.Views.FavoriteView"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mui="clr-namespace:FirstFloor.ModernUI.Windows.Controls;assembly=FirstFloor.ModernUI"
 		xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
 		xmlns:converters="clr-namespace:Silverforge.TwitterClient.Converters"
 		mc:Ignorable="d" 
 		d:DesignHeight="300" d:DesignWidth="300"
-		Title="TweetView"
-		>
+		Title="FavoriteView">
 
 	<Page.Resources>
 		<converters:BoolToOpacityConverter x:Key="BoolToOpacity" />
@@ -24,36 +24,16 @@
 	<Grid x:Name="Root" Margin="0,-50,0,0">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<Grid Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}">
-			<Grid.RowDefinitions>
-				<RowDefinition />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
+		<ProgressBar Minimum="0" Maximum="1" Height="16" IsIndeterminate="True" Margin="0,0,0,16" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
 
-			<TextBlock Grid.ColumnSpan="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ServiceDelayText}" />
-			<TextBlock Grid.Row="1" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ResetTime}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
-			<TextBlock Grid.Row="1" Grid.Column="1" x:Name="ResetTime" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
-
-			<TextBlock Grid.Row="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Ratio}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
-			<TextBlock Grid.Row="2" Grid.Column="1" x:Name="RateRatio" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
-		</Grid>
-
-		<ProgressBar Grid.Row="1" Minimum="0" Maximum="1" Height="16" IsIndeterminate="True" Margin="0,0,0,16" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
-
-		<ScrollViewer x:Name="MainScroll" Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+		<ScrollViewer Grid.Row="1" x:Name="MainScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
 			<ItemsControl x:Name="Tweets" ItemsSource="{Binding Tweets}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Border x:Name="Layer" BorderThickness="0" BorderBrush="{Binding Source={StaticResource CustomAppearanceManager}, Path=AccentColor}" Margin="1,1,1,3" cal:Message.Attach="[Event MouseUp] = [Action ReadTweet($dataContext)]">
+						<Border x:Name="Layer" BorderThickness="0" BorderBrush="{Binding Source={StaticResource CustomAppearanceManager}, Path=AccentColor}" Margin="1,1,1,3">
 							<Border.Background>
 								<SolidColorBrush Color="{Binding Source={StaticResource CustomAppearanceManager}, Path=AccentColor}" Opacity="{Binding IsNew, Converter={StaticResource BoolToOpacity}}" />
 							</Border.Background>
@@ -74,11 +54,6 @@
 									<ContextMenu.ItemsSource>
 										<CompositeCollection>
 											<MenuItem 
-												Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ReadAll}" 
-												cal:Message.Attach="SetAllRead"
-												cal:Action.TargetWithoutContext="{Binding DataContext, Source={x:Reference Root}}"
-												/>
-											<MenuItem 
 												Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Favorite}" 
 												cal:Message.Attach="Favorite($dataContext)"
 												cal:Action.TargetWithoutContext="{Binding DataContext, Source={x:Reference Root}}"
@@ -87,17 +62,6 @@
 													<Image Source="../Images/star.png" Width="16" Height="16"  />
 												</MenuItem.Icon>
 											</MenuItem>
-											<Separator></Separator>
-											<MenuItem 
-												Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.CollapseAll}" 
-												cal:Message.Attach="CollapseAll"
-												cal:Action.TargetWithoutContext="{Binding DataContext, Source={x:Reference Root}}"
-												/>
-											<MenuItem 
-												Header="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.ExpandAll}" 
-												cal:Message.Attach="ExpandAll"
-												cal:Action.TargetWithoutContext="{Binding DataContext, Source={x:Reference Root}}"
-												/>
 										</CompositeCollection>
 									</ContextMenu.ItemsSource>
 								</ContextMenu>

@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using Caliburn.Micro;
-using Silverforge.TwitterClient.Common;
 using Silverforge.TwitterClient.Common.Definition;
+using Silverforge.TwitterClient.Helpers;
 using Silverforge.TwitterClient.Model;
 using TweetSharp;
 
@@ -19,18 +19,18 @@ namespace Silverforge.TwitterClient.ViewModels
 			Bottom
 		}
 
-		private readonly IAppSettings appSettings;
 		private readonly ITweetTimer tweetTimer;
-		private TwitterService service;
+		private readonly TwitterService service;
 		private string rateRatio;
 		private string resetTime;
 		private bool isDelayed;
 		private bool isLoading;
 
-		public TweetViewModel(IAppSettings appSettings, ITweetTimer tweetTimer)
+		public TweetViewModel(ITweetTimer tweetTimer, TwitterService service)
 		{
-			this.appSettings = appSettings;
 			this.tweetTimer = tweetTimer;
+			this.service = service;
+
 			Tweets = new BindableCollection<Tweet>();
 		}
 
@@ -63,6 +63,16 @@ namespace Silverforge.TwitterClient.ViewModels
 			{
 				isDelayed = value;
 				NotifyOfPropertyChange(() => IsDelayed);
+			}
+		}
+
+		public bool IsLoading
+		{
+			get { return isLoading; }
+			set
+			{
+				isLoading = value;
+				NotifyOfPropertyChange(() => IsLoading);
 			}
 		}
 
@@ -112,23 +122,19 @@ namespace Silverforge.TwitterClient.ViewModels
 			if (isLoading)
 				return;
 
+			IsLoading = true;
+
 			var historicalTweets =
 				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, MaxId = Tweets.Min(t => t.OriginalId) });
 
 			AddNewTweets(historicalTweets, ListPositionType.Bottom);
+
+			IsLoading = false;
 		}
 
 		protected override void OnViewLoaded(object view)
 		{
 			base.OnViewLoaded(view);
-
-			service = new TwitterService(appSettings.ConsumerKey,
-																	 appSettings.ConsumerSecret,
-																	 appSettings.AccessToken,
-																	 appSettings.AccessTokenSecret)
-				{
-					IncludeRetweets = true
-				};
 
 			tweetTimer
 				.Subject
@@ -146,6 +152,8 @@ namespace Silverforge.TwitterClient.ViewModels
 
 		private void DownloadNewTweets()
 		{
+			IsLoading = true;
+
 			long? sinceId = null;
 			if (Tweets.Count > 0)
 				sinceId = Tweets.Max(t => t.OriginalId);
@@ -154,12 +162,12 @@ namespace Silverforge.TwitterClient.ViewModels
 				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = sinceId });
 
 			AddNewTweets(downloadedTweets);
+
+			IsLoading = false;
 		}
 
 		private void AddNewTweets(IEnumerable<TwitterStatus> downloadedTweets, ListPositionType listPositionType = ListPositionType.Top)
 		{
-			isLoading = true;
-
 			var twitterRateLimitStatus = service.Response.RateLimitStatus;
 			RateRatio = String.Format("{0} / {1}", twitterRateLimitStatus.RemainingHits, twitterRateLimitStatus.HourlyLimit);
 			ResetTime = String.Format("{0:yyyy-MM-dd HH:mm}", twitterRateLimitStatus.ResetTime);
@@ -184,47 +192,16 @@ namespace Silverforge.TwitterClient.ViewModels
 			{
 				for (var i = tweets.Length - 1; i >= 0; i--)
 				{
-					Tweets.Insert(0, TweetMapper(tweets[i]));
+					Tweets.Insert(0, TweetTransformer.TweetMapper(tweets[i]));
 				}
 			}
 			else
 			{
 				foreach (var ts in tweets.Where(ts => Tweets.FirstOrDefault(t => t.OriginalId == ts.Id) == null))
 				{
-					Tweets.Add(TweetMapper(ts));
+					Tweets.Add(TweetTransformer.TweetMapper(ts));
 				}
 			}
-
-			isLoading = false;
-		}
-
-		private static Tweet TweetMapper(TwitterStatus originalTweet)
-		{
-			var tweet = new Tweet();
-			TwitterStatus twitterStatus;
-			if (originalTweet.RetweetedStatus != null)
-			{
-				tweet.OriginalId = originalTweet.Id;
-				tweet.IsRetweeted = true;
-				tweet.RetweetedBy = originalTweet.User.Name;
-				twitterStatus = originalTweet.RetweetedStatus;
-			}
-			else
-			{
-				twitterStatus = originalTweet;
-				tweet.OriginalId = twitterStatus.Id;
-			}
-
-			tweet.Id = twitterStatus.Id;
-			tweet.ImageUrl = twitterStatus.User.ProfileImageUrl;
-			tweet.Text = FormatHelper.HtmlToBbCodeText(twitterStatus.TextAsHtml);
-			tweet.UserFullName = twitterStatus.User.Name;
-			tweet.Created = FormatHelper.UniDate(twitterStatus.CreatedDate);
-			tweet.IsNew = true;
-			tweet.IsFavorited = twitterStatus.IsFavorited;
-			tweet.IsExpanded = true;
-
-			return tweet;
 		}
 	}
 }

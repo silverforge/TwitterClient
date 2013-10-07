@@ -6,6 +6,7 @@ using Silverforge.TwitterClient.Helpers;
 using Silverforge.TwitterClient.Helpers.View;
 using Silverforge.TwitterClient.ViewModels;
 using SimpleInjector;
+using TweetSharp;
 
 namespace Silverforge.TwitterClient
 {
@@ -35,10 +36,25 @@ namespace Silverforge.TwitterClient
 			container.RegisterSingle<IEventAggregator, EventAggregator>();
 			container.RegisterSingle<INavigationManager, NavigationManager>();
 
-			container.RegisterSingle<StringMessageHandler>();
-
 			container.RegisterSingle<IAppSettings, AppSettings>();
 			container.RegisterSingle<IShellViewModel, ShellViewModel>();
+
+			container.Register<TwitterService>(() =>
+				{
+					var appSettings = container.GetInstance<IAppSettings>();
+					var service = new TwitterService(appSettings.ConsumerKey,
+					                                 appSettings.ConsumerSecret,
+					                                 appSettings.AccessToken,
+					                                 appSettings.AccessTokenSecret)
+						{
+							IncludeRetweets = true
+						};
+
+					return service;
+				});
+
+			container.RegisterSingle<StringMessageHandler>();
+
 			container.Register<ITweetViewModel, TweetViewModel>();
 			container.Register<IAdministrationViewModel, AdministrationViewModel>();
 			container.Register<ITweetTimer, TweetTimer>();

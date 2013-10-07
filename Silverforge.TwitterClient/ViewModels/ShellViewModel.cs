@@ -16,12 +16,15 @@ namespace Silverforge.TwitterClient.ViewModels
 			this.navigationManager = navigationManager;
 			eventAggregator.Subscribe(stringMessageHandler);
 			MenuLinkGroups = new LinkGroupCollection();
+
 			var tweetUri = navigationManager.Uri<ITweetViewModel>();
+			var favoriteUri = navigationManager.Uri<IFavoriteViewModel>();
 			var administrationUri = navigationManager.Uri<IAdministrationViewModel>();
 
 			TitleLinks = new LinkCollection
 				{
 					new Link {DisplayName = "tweets", Source = new Uri(tweetUri, UriKind.RelativeOrAbsolute)},
+					new Link {DisplayName = "favorites", Source = new Uri(favoriteUri, UriKind.RelativeOrAbsolute)},
 					new Link {DisplayName = "administration", Source = new Uri(administrationUri, UriKind.RelativeOrAbsolute)}
 				};
 		}
