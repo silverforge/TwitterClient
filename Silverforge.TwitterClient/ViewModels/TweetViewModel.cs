@@ -25,6 +25,7 @@ namespace Silverforge.TwitterClient.ViewModels
 		private string resetTime;
 		private bool isDelayed;
 		private bool isLoading;
+		private string errorMessage;
 
 		public TweetViewModel(ITweetTimer tweetTimer, TwitterService service)
 		{
@@ -73,6 +74,16 @@ namespace Silverforge.TwitterClient.ViewModels
 			{
 				isLoading = value;
 				NotifyOfPropertyChange(() => IsLoading);
+			}
+		}
+
+		public string ErrorMessage
+		{
+			get { return errorMessage; }
+			set
+			{
+				errorMessage = value;
+				NotifyOfPropertyChange(() => ErrorMessage);
 			}
 		}
 
@@ -154,16 +165,28 @@ namespace Silverforge.TwitterClient.ViewModels
 		{
 			IsLoading = true;
 
+			if (!string.IsNullOrEmpty(ErrorMessage))
+				ErrorMessage = String.Empty;
+
 			long? sinceId = null;
 			if (Tweets.Count > 0)
 				sinceId = Tweets.Max(t => t.OriginalId);
 
-			var downloadedTweets =
-				service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = sinceId });
+			try
+			{
+				var downloadedTweets =
+					service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions { Count = 40, SinceId = sinceId });
 
-			AddNewTweets(downloadedTweets);
-
-			IsLoading = false;
+				AddNewTweets(downloadedTweets);
+			}
+			catch (Exception exception)
+			{
+				ErrorMessage = exception.Message;
+			}
+			finally
+			{
+				IsLoading = false;
+			}
 		}
 
 		private void AddNewTweets(IEnumerable<TwitterStatus> downloadedTweets, ListPositionType listPositionType = ListPositionType.Top)

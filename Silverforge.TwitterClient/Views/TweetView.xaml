@@ -24,13 +24,14 @@
 	<Grid x:Name="Root" Margin="0,-50,0,0">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
+			<RowDefinition Height="10" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
 		<Grid Visibility="{Binding IsDelayed, Converter={StaticResource BoolToVisibility}}">
 			<Grid.RowDefinitions>
 				<RowDefinition />
+				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
@@ -45,9 +46,23 @@
 
 			<TextBlock Grid.Row="2" Text="{Binding Source={StaticResource ResourceWrapper}, Path=LocalizedStrings.Ratio}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3" />
 			<TextBlock Grid.Row="2" Grid.Column="1" x:Name="RateRatio" Margin="3" HorizontalAlignment="Left" VerticalAlignment="Center" />
+			<TextBlock Grid.Row="3" Grid.ColumnSpan="2" x:Name="ErrorMessage" Margin="3" TextWrapping="Wrap" Foreground="Crimson">
+				<TextBlock.Triggers>
+					<EventTrigger RoutedEvent="FrameworkElement.TextInput">
+						<BeginStoryboard>
+							<Storyboard>
+								<DoubleAnimation Storyboard.TargetProperty="Opacity"
+													 Duration="00:00:01"
+													 From="0"
+													 To="1" />
+							</Storyboard>
+						</BeginStoryboard>
+					</EventTrigger>
+				</TextBlock.Triggers>
+			</TextBlock>
 		</Grid>
 
-		<ProgressBar Grid.Row="1" Minimum="0" Maximum="1" Height="16" IsIndeterminate="True" Margin="0,0,0,16" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
+		<ProgressBar Grid.Row="1" Minimum="0" Maximum="1" IsIndeterminate="True" VerticalAlignment="Center" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
 
 		<ScrollViewer x:Name="MainScroll" Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
 			<ItemsControl x:Name="Tweets" ItemsSource="{Binding Tweets}">

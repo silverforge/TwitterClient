@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Silverforge.TwitterClient.Common.Definition;
 using Silverforge.TwitterClient.Helpers;
@@ -36,13 +38,22 @@ namespace Silverforge.TwitterClient.ViewModels
 			IsLoading = true;
 			base.OnViewLoaded(view);
 
-			var favoriteTweets = service.ListFavoriteTweets(new ListFavoriteTweetsOptions {Count = 40});
+			Task
+				.Factory
+				.StartNew(() =>
+					{
+						var favoriteTweets = service.ListFavoriteTweets(new ListFavoriteTweetsOptions {Count = 40});
 
-			foreach (var tweet in favoriteTweets.Select(TweetTransformer.TweetMapper))
-			{
-				Tweets.Add(tweet);
-			}
-			IsLoading = false;
+						foreach (var tweet in favoriteTweets.Select(TweetTransformer.TweetMapper))
+						{
+							Tweets.Add(tweet);
+						}
+
+					})
+				.ContinueWith(t =>
+					{
+						IsLoading = false;
+					});
 		}
 
 		public void Favorite(Tweet tweet)

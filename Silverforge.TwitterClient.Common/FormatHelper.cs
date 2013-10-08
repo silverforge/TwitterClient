@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace Silverforge.TwitterClient.Common
 {
@@ -7,7 +6,8 @@ namespace Silverforge.TwitterClient.Common
 	{
 		public static string HtmlToBbCodeText(string htmlText)
 		{
-			var bbCodeText = htmlText.Replace("</a>", "[/url]").Replace("\" target=\"_blank\">", "]").Replace("<a href=\"", "[url=");
+			var workingPiece = htmlText.Replace("[", "[]").Replace("]", "[]").Replace("[[", "[").Replace("]]", "]");
+			var bbCodeText = workingPiece.Replace("</a>", "[/url]").Replace("\" target=\"_blank\">", "]").Replace("<a href=\"", "[url=");
 			return bbCodeText;
 		}
 
