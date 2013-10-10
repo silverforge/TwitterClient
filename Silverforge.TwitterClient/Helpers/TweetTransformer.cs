@@ -8,6 +8,9 @@ namespace Silverforge.TwitterClient.Helpers
 	{
 		public static Tweet TweetMapper(TwitterStatus originalTweet)
 		{
+			if(originalTweet == null)
+				return new Tweet();
+
 			var tweet = new Tweet();
 			TwitterStatus twitterStatus;
 			if (originalTweet.RetweetedStatus != null)
