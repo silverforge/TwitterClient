@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -59,6 +60,7 @@
     <Compile Include="ContextKeys.cs" />
     <Compile Include="Definition\IAdministrationViewModel.cs" />
     <Compile Include="Definition\IAppSettings.cs" />
+    <Compile Include="Definition\ICustomAppearanceManager.cs" />
     <Compile Include="Definition\IFavoriteViewModel.cs" />
     <Compile Include="Definition\INavigationManager.cs" />
     <Compile Include="Definition\IShellViewModel.cs" />
