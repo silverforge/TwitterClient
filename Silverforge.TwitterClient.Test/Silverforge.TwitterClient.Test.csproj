@@ -90,6 +90,8 @@
     <Compile Include="Helpers\TweetTimerTest.cs" />
     <Compile Include="Helpers\TweetTransformerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AdministrationViewModelTest.cs" />
+    <Compile Include="ViewModels\BaseViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

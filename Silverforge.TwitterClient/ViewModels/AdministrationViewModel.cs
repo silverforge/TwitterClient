@@ -1,17 +1,16 @@
 ﻿using System.Windows.Media;
 using Silverforge.TwitterClient.Common.Definition;
-using Silverforge.TwitterClient.Helpers.View;
 
 namespace Silverforge.TwitterClient.ViewModels
 {
 	public class AdministrationViewModel : BaseViewModel, IAdministrationViewModel
 	{
-		private readonly CustomAppearanceManager appearanceManager;
+		private readonly ICustomAppearanceManager appearanceManager;
 		private readonly IAppSettings appSettings;
 		private Color selectedTextColor;
 		private Color selectedAccentColor;
 
-		public AdministrationViewModel(CustomAppearanceManager appearanceManager, IAppSettings appSettings)
+		public AdministrationViewModel(ICustomAppearanceManager appearanceManager, IAppSettings appSettings)
 		{
 			this.appearanceManager = appearanceManager;
 			this.appSettings = appSettings;

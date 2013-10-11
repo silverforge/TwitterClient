@@ -4,10 +4,11 @@ using System.Windows.Shapes;
 using Caliburn.Micro;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
+using Silverforge.TwitterClient.Common.Definition;
 
 namespace Silverforge.TwitterClient.Helpers.View
 {
-	public class CustomAppearanceManager : PropertyChangedBase
+	public class CustomAppearanceManager : PropertyChangedBase, ICustomAppearanceManager
 	{
 		private Color accentColor;
 		private Color textColor;
