@@ -2,6 +2,7 @@ TwitterClient
 =============
 
 Desktop twitter client for daily follow up. It is not official twitter application I wrote it just to follow the tweets on my wall.
+Any suggestions, comments are very welcome about the application.
 
 How to install the app
 ----------------------
@@ -28,8 +29,6 @@ Once you have installed the application you can find a Silverforge.TwitterClient
 How to link an application with my twitter account
 --------------------------------------------------
 You can find a very useful post here : [Tokens from dev.twitter.com][3].
-
-Any suggestions, comments are very welcome about the application.
 
 Screenshots
 -----------
