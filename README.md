@@ -31,7 +31,7 @@ You can find a very useful post here : [Tokens from dev.twitter.com][3].
 
 Any suggestions, comments are very welcome about the application.
 
-[1]: https://github.com/silverforge/TwitterClient/blob/master/Silverforge.TwitterClient.Setup/Silverforge.TwitterClient.Setup-SetupFiles/Silverforge.TwitterClient.Setup.msi "TwitterClient.Setup"
+[1]: https://github.com/silverforge/TwitterClient/raw/master/Silverforge.TwitterClient.Setup/Silverforge.TwitterClient.Setup-SetupFiles/Silverforge.TwitterClient.Setup.msi "TwitterClient.Setup"
 
 [2]: https://dev.twitter.com/ "dev.twitter.com" 
 
