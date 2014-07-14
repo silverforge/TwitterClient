@@ -104,6 +104,14 @@ namespace Silverforge.TwitterClient.ViewModels
 				tweet.IsFavorited = !tweet.IsFavorited;
 		}
 
+		public void ReTweet(Tweet tweet)
+		{
+			service.Retweet(new RetweetOptions
+			{
+				Id = tweet.Id
+			});
+		}
+
 		public void SetAllRead()
 		{
 			foreach (var tweet in Tweets)

@@ -156,6 +156,9 @@
   <data name="ResetTime" xml:space="preserve">
     <value>Restart at</value>
   </data>
+  <data name="ReTweet" xml:space="preserve">
+    <value>Retweet</value>
+  </data>
   <data name="ServiceDelayText" xml:space="preserve">
     <value>Service is delayed by twitter server</value>
   </data>
